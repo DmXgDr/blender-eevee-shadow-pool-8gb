@@ -4,7 +4,7 @@
 
 本项目不隶属于 Blender Foundation，也不代表 Blender 官方发布或支持。Blender 的名称和相关标识属于其各自权利人。
 
-[下载 Windows 便携版](../../releases/latest) · [构建说明](docs/BUILD.md) · [测试记录](docs/VALIDATION.md) · [许可与来源](NOTICE.md)
+[下载 Windows 便携版](https://github.com/DmXgDr/blender-eevee-shadow-pool-8gb/releases/latest) · [构建说明](docs/BUILD.md) · [测试记录](docs/VALIDATION.md) · [许可与来源](NOTICE.md)
 
 ![8 GB 阴影池及实际渲染视口](docs/images/viewport-8gb.png)
 
@@ -23,7 +23,7 @@
 
 ## 下载与使用
 
-1. 在 [Releases](../../releases) 下载 `Blender-5.2.3-Shadow8GB-Windows-x64-v1.0.0.zip`。
+1. 在 [Releases](https://github.com/DmXgDr/blender-eevee-shadow-pool-8gb/releases) 下载 `Blender-5.2.3-Shadow8GB-Windows-x64-v1.0.0.zip`。
 2. 完整解压到可写目录，双击根目录的 **Start-Blender.cmd**。
 3. 在 **Render Properties → Performance → Memory → Shadow Pool** 选择所需容量。
 
