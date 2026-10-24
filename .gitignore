@@ -1,0 +1,6 @@
+/build/
+/app/
+/profiles/
+*.pdb
+__pycache__/
+blender/lib/windows_x64/

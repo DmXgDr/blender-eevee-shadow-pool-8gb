@@ -1,0 +1,380 @@
+diff --git a/source/blender/draw/engines/eevee/eevee_defines.hh b/source/blender/draw/engines/eevee/eevee_defines.hh
+index 775f15f4..5026afbf 100644
+--- a/source/blender/draw/engines/eevee/eevee_defines.hh
++++ b/source/blender/draw/engines/eevee/eevee_defines.hh
+@@ -2,6 +2,11 @@
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
+ 
++/* Shadow8GB modification, 2026-10-23: extend EEVEE shadow-pool addressing,
++ * capacity, defaults, diagnostics or tests to support 8 GiB.
++ * Distribution notice added 2026-10-24. See the accompanying source and patch. */
++
++
+ /** \file
+  * \ingroup eevee
+  *
+@@ -112,7 +117,7 @@
+ #define SHADOW_AABB_TAG_GROUP_SIZE 64
+ #define SHADOW_MAX_TILEMAP 4096
+ #define SHADOW_MAX_TILE (SHADOW_MAX_TILEMAP * SHADOW_TILEDATA_PER_TILEMAP)
+-#define SHADOW_MAX_PAGE 8192
++#define SHADOW_MAX_PAGE 32768
+ #define SHADOW_BOUNDS_GROUP_SIZE 64
+ #define SHADOW_CLIPMAP_GROUP_SIZE 64
+ #define SHADOW_VIEW_MAX 64 /* Must match DRW_VIEW_MAX. */
+@@ -120,7 +125,7 @@
+ #define SHADOW_ATOMIC 1
+ #define SHADOW_PAGE_PER_ROW 8
+ #define SHADOW_PAGE_PER_COL 8
+-#define SHADOW_PAGE_MAX_LAYER 128
++#define SHADOW_PAGE_MAX_LAYER 512
+ #define SHADOW_PAGE_PER_LAYER (SHADOW_PAGE_PER_ROW * SHADOW_PAGE_PER_COL)
+ #define SHADOW_MAX_STEP 16
+ #define SHADOW_MAX_RAY 4
+diff --git a/source/blender/draw/engines/eevee/eevee_shadow.cc b/source/blender/draw/engines/eevee/eevee_shadow.cc
+index 1d3ad149..955d6451 100644
+--- a/source/blender/draw/engines/eevee/eevee_shadow.cc
++++ b/source/blender/draw/engines/eevee/eevee_shadow.cc
+@@ -2,6 +2,11 @@
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
+ 
++/* Shadow8GB modification, 2026-10-23: extend EEVEE shadow-pool addressing,
++ * capacity, defaults, diagnostics or tests to support 8 GiB.
++ * Distribution notice added 2026-10-24. See the accompanying source and patch. */
++
++
+ /** \file
+  * \ingroup eevee
+  *
+@@ -613,6 +618,12 @@ void ShadowModule::init()
+   eGPUTextureUsage tex_usage = GPU_TEXTURE_USAGE_SHADER_READ | GPU_TEXTURE_USAGE_SHADER_WRITE |
+                                GPU_TEXTURE_USAGE_ATOMIC;
+   if (atlas_tx_.ensure_2d_array(atlas_type, atlas_extent, atlas_layers, tex_usage)) {
++    if (getenv("BLENDER_SHADOW_POOL_DIAGNOSTICS") != nullptr) {
++      printf("SHADOW_POOL requested_mib=%d pages=%d extent=%dx%dx%d bytes=%llu valid=%d\n",
++             scene.eevee.shadow_pool_size, shadow_page_len_, atlas_extent.x, atlas_extent.y,
++             atlas_layers, (unsigned long long)(size_t(atlas_extent.x) * atlas_extent.y *
++             atlas_layers * sizeof(int)), int(atlas_tx_.is_valid()));
++    }
+     /* Global update. */
+     do_full_update_ = true;
+   }
+@@ -1369,6 +1380,13 @@ void ShadowModule::render(View &view, int2 extent)
+ 
+   } while (!shadow_update_finished(loop_count));
+ 
++  if (getenv("BLENDER_SHADOW_POOL_DIAGNOSTICS") != nullptr) {
++    pages_infos_data_.read();
++    printf("SHADOW_USAGE capacity=%d free=%d cached_start=%u cached_end=%u\n",
++           shadow_page_len_, pages_infos_data_.page_free_count,
++           pages_infos_data_.page_cached_start, pages_infos_data_.page_cached_end);
++  }
++
+   if (prev_fb) {
+     GPU_framebuffer_bind(prev_fb);
+   }
+diff --git a/source/blender/draw/engines/eevee/eevee_shadow_shared.hh b/source/blender/draw/engines/eevee/eevee_shadow_shared.hh
+index 131d8468..cb780c3f 100644
+--- a/source/blender/draw/engines/eevee/eevee_shadow_shared.hh
++++ b/source/blender/draw/engines/eevee/eevee_shadow_shared.hh
+@@ -2,6 +2,11 @@
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
+ 
++/* Shadow8GB modification, 2026-10-23: extend EEVEE shadow-pool addressing,
++ * capacity, defaults, diagnostics or tests to support 8 GiB.
++ * Distribution notice added 2026-10-24. See the accompanying source and patch. */
++
++
+ /**
+  * Shared code between host and client code-bases.
+  */
+@@ -205,8 +210,8 @@ enum [[host_shared]] eShadowFlag : uint32_t {
+   SHADOW_TAG_UPDATE = (1u << 31u)
+ };
+ 
+-/* NOTE: Trust the input to be in valid range (max is [7,7,127]).
+- * If it is in valid range, it should pack to 14bits so that `shadow_tile_pack()` can use it.
++/* NOTE: Trust the input to be in valid range (max is [7,7,511]).
++ * If it is in valid range, it should pack to 15 bits so that `shadow_tile_pack()` can use it.
+  * But sometime this is used to encode invalid pages uint3(-1) and it needs to output uint(-1).
+  */
+ static inline uint shadow_page_pack(uint3 page)
+@@ -217,11 +222,11 @@ static inline uint3 shadow_page_unpack(uint data)
+ {
+   uint3 page;
+   /* clang-format off */ /* Multi-line macros breaks shader error lines. */
+-  BLI_STATIC_ASSERT(SHADOW_PAGE_PER_ROW <= 8 && SHADOW_PAGE_PER_COL <= 8 && SHADOW_PAGE_MAX_LAYER <= 128, "Update page packing")
++  BLI_STATIC_ASSERT(SHADOW_PAGE_PER_ROW <= 8 && SHADOW_PAGE_PER_COL <= 8 && SHADOW_PAGE_MAX_LAYER <= 512, "Update page packing")
+   /* clang-format on */
+   page.x = (data >> 0u) & 7u;
+   page.y = (data >> 3u) & 7u;
+-  page.z = (data >> 6u) & 127u;
++  page.z = (data >> 6u) & 511u;
+   /* clang-format off */ /* Multi-line macros breaks shader error lines. */
+   BLI_STATIC_ASSERT(SHADOW_MAX_PAGE == (SHADOW_PAGE_PER_ROW * SHADOW_PAGE_PER_COL * SHADOW_PAGE_MAX_LAYER), "Update page packing")
+   /* clang-format on */
+@@ -231,13 +236,12 @@ static inline uint3 shadow_page_unpack(uint data)
+ static inline ShadowTileData shadow_tile_unpack(ShadowTileDataPacked data)
+ {
+   ShadowTileData tile;
+-  tile.page = shadow_page_unpack(data);
+-  /* -- 13 bits -- */
+-  /* Unused bits. */
+-  /* -- 14 bits -- */
+-  BLI_STATIC_ASSERT(SHADOW_MAX_PAGE <= 8192, "Update page packing")
+-  tile.cache_index = (data >> 14u) & 8191u;
+-  /* -- 27 bits -- */
++  /* Allocated pages and cache references are mutually exclusive. Keep their
++   * 15-bit payload in a tagged union so flag atomics remain 32-bit. */
++  const bool cached = (data & SHADOW_IS_CACHED) != 0;
++  tile.page = cached ? uint3(7u, 7u, 511u) : shadow_page_unpack(data);
++  tile.cache_index = cached ? (data & uint(SHADOW_MAX_PAGE - 1)) : uint(-1);
++  BLI_STATIC_ASSERT(SHADOW_MAX_PAGE <= (1 << 15), "Update page packing")
+   tile.is_used = (data & SHADOW_IS_USED) != 0;
+   tile.is_cached = (data & SHADOW_IS_CACHED) != 0;
+   tile.is_allocated = (data & SHADOW_IS_ALLOCATED) != 0;
+@@ -251,9 +255,9 @@ static inline ShadowTileDataPacked shadow_tile_pack(ShadowTileData tile)
+   uint data;
+   /* NOTE: Page might be set to invalid values for tracking invalid usages.
+    * So we have to mask the result. */
+-  data = shadow_page_pack(tile.page) & uint(SHADOW_MAX_PAGE - 1);
+-  BLI_STATIC_ASSERT(SHADOW_MAX_PAGE <= 8192, "Update page packing")
+-  data |= (tile.cache_index & 8191u) << 14u;
++  data = (tile.is_cached ? tile.cache_index : shadow_page_pack(tile.page)) &
++         uint(SHADOW_MAX_PAGE - 1);
++  BLI_STATIC_ASSERT(SHADOW_MAX_PAGE <= (1 << 15), "Update page packing")
+   data |= (tile.is_used ? uint(SHADOW_IS_USED) : 0);
+   data |= (tile.is_allocated ? uint(SHADOW_IS_ALLOCATED) : 0);
+   data |= (tile.is_cached ? uint(SHADOW_IS_CACHED) : 0);
+@@ -280,35 +284,27 @@ struct ShadowSamplingTile {
+ /** \note Stored packed as a uint. */
+ #define ShadowSamplingTilePacked uint
+ 
+-/* NOTE: Trust the input to be in valid range [0, (1 << SHADOW_TILEMAP_MAX_CLIPMAP_LOD) - 1].
+- * Maximum LOD level index we can store is SHADOW_TILEMAP_MAX_CLIPMAP_LOD,
+- * so we need SHADOW_TILEMAP_MAX_CLIPMAP_LOD bits to store the offset in each dimension.
+- * Result fits into SHADOW_TILEMAP_MAX_CLIPMAP_LOD * 2 bits. */
++/* Clipmap amendment only propagates LOD 0..7 and masks each offset to
++ * (1 << lod) - 1. Seven bits per axis preserve its complete range.
++ * Sampling layout: page[0:14], lod[15:17], offset.x[18:24], offset.y[25:31]. */
+ static inline uint shadow_lod_offset_pack(uint2 ofs)
+ {
+-  BLI_STATIC_ASSERT(SHADOW_TILEMAP_MAX_CLIPMAP_LOD <= 8, "Update page packing")
+-  return ofs.x | (ofs.y << SHADOW_TILEMAP_MAX_CLIPMAP_LOD);
++  BLI_STATIC_ASSERT(SHADOW_TILEMAP_MAX_CLIPMAP_LOD == 8, "Update lod packing")
++  return (ofs.x & 127u) | ((ofs.y & 127u) << 7u);
+ }
+ static inline uint2 shadow_lod_offset_unpack(uint data)
+ {
+-  return (uint2(data) >> uint2(0, SHADOW_TILEMAP_MAX_CLIPMAP_LOD)) &
+-         uint2((1 << SHADOW_TILEMAP_MAX_CLIPMAP_LOD) - 1);
++  return (uint2(data) >> uint2(0, 7)) & uint2(127u);
+ }
+ 
+ static inline ShadowSamplingTile shadow_sampling_tile_unpack(ShadowSamplingTilePacked data)
+ {
+   ShadowSamplingTile tile;
+   tile.page = shadow_page_unpack(data);
+-  /* -- 13 bits -- */
+-  /* Max value is actually SHADOW_TILEMAP_MAX_CLIPMAP_LOD but we mask the bits. */
+-  BLI_STATIC_ASSERT(SHADOW_TILEMAP_MAX_CLIPMAP_LOD <= 8u, "Update lod packing")
+-  tile.lod = (data >> 13u) & 7u;
+-  /* -- 16 bits -- */
+-  tile.lod_offset = shadow_lod_offset_unpack(data >> 16u);
+-  /* -- 32 bits -- */
++  tile.lod = (data >> 15u) & 7u;
++  tile.lod_offset = shadow_lod_offset_unpack(data >> 18u);
+   tile.is_valid = data != 0u;
+ #ifndef GPU_SHADER
+-  /* Make tests pass on CPU but it is not required for proper rendering. */
+   if (tile.lod == 0) {
+     tile.lod_offset.x = 0;
+   }
+@@ -321,18 +317,14 @@ static inline ShadowSamplingTilePacked shadow_sampling_tile_pack(ShadowSamplingT
+   if (!tile.is_valid) {
+     return 0u;
+   }
+-  /* Tag a valid tile of LOD0 valid by setting their offset to 1.
+-   * This doesn't change the sampling and allows to use of all bits for data.
+-   * This makes sure no valid packed tile is 0u. */
++  /* Preserve the upstream nonzero sentinel for a valid LOD0 page at address 0. */
+   if (tile.lod == 0) {
+     tile.lod_offset.x = 1;
+   }
++  BLI_STATIC_ASSERT(SHADOW_MAX_PAGE <= (1 << 15), "Update page packing")
+   uint data = shadow_page_pack(tile.page);
+-  BLI_STATIC_ASSERT(SHADOW_MAX_PAGE <= 8192, "Update page packing")
+-  /* Max value is actually SHADOW_TILEMAP_MAX_CLIPMAP_LOD but we mask the bits. */
+-  BLI_STATIC_ASSERT(SHADOW_TILEMAP_MAX_CLIPMAP_LOD <= 8u, "Update lod packing")
+-  data |= (tile.lod & 7u) << 13u;
+-  data |= shadow_lod_offset_pack(tile.lod_offset) << 16u;
++  data |= (tile.lod & 7u) << 15u;
++  data |= shadow_lod_offset_pack(tile.lod_offset) << 18u;
+   return data;
+ }
+ 
+diff --git a/source/blender/draw/tests/eevee_test.cc b/source/blender/draw/tests/eevee_test.cc
+index ae53d200..e74b56b3 100644
+--- a/source/blender/draw/tests/eevee_test.cc
++++ b/source/blender/draw/tests/eevee_test.cc
+@@ -2,6 +2,11 @@
+  *
+  * SPDX-License-Identifier: Apache-2.0 */
+ 
++/* Shadow8GB modification, 2026-10-23: extend EEVEE shadow-pool addressing,
++ * capacity, defaults, diagnostics or tests to support 8 GiB.
++ * Distribution notice added 2026-10-24. See the accompanying source and patch. */
++
++
+ #include "testing/testing.h"
+ 
+ #include "GPU_batch.hh"
+@@ -539,8 +544,10 @@ class TestDefrag {
+              StringRefNull expect)
+   {
+     for (uint i : IndexRange(SHADOW_MAX_PAGE)) {
+-      uint2 page = {i % SHADOW_PAGE_PER_ROW, i / SHADOW_PAGE_PER_ROW};
+-      pages_free_data[i] = page.x | (page.y << 16u);
++      uint3 page = {i % SHADOW_PAGE_PER_ROW,
++                    (i / SHADOW_PAGE_PER_ROW) % SHADOW_PAGE_PER_COL,
++                    i / SHADOW_PAGE_PER_LAYER};
++      pages_free_data[i] = shadow_page_pack(page);
+     }
+ 
+     for (uint i : IndexRange(tiles_data.size())) {
+@@ -681,8 +688,10 @@ class TestAlloc {
+     }
+ 
+     for (uint i : IndexRange(0, page_free_count)) {
+-      uint2 page = {i % SHADOW_PAGE_PER_ROW, i / SHADOW_PAGE_PER_ROW};
+-      pages_free_data[i] = page.x | (page.y << 16u);
++      uint3 page = {i % SHADOW_PAGE_PER_ROW,
++                    (i / SHADOW_PAGE_PER_ROW) % SHADOW_PAGE_PER_COL,
++                    i / SHADOW_PAGE_PER_LAYER};
++      pages_free_data[i] = shadow_page_pack(page);
+     }
+     pages_free_data.push_update();
+     pages_cached_data.push_update();
+@@ -744,6 +753,11 @@ class TestAlloc {
+ 
+     bool alloc_success = page_free_count >= 1;
+ 
++    if (alloc_success) {
++      EXPECT_EQ(shadow_tile_unpack(tiles_data[tile_free]).page,
++                shadow_page_unpack(uint(page_free_count - 1)));
++    }
++
+     EXPECT_EQ(shadow_tile_unpack(tiles_data[tile_free]).do_update, alloc_success);
+     EXPECT_EQ(shadow_tile_unpack(tiles_data[tile_free]).is_allocated, alloc_success);
+     EXPECT_EQ(shadow_tile_unpack(tiles_data[tile_allocated]).do_update, false);
+@@ -1241,6 +1255,57 @@ static void test_eevee_shadow_tile_packing()
+ }
+ DRAW_TEST(eevee_shadow_tile_packing)
+ 
++/* Exercise all physical addresses and cache indices, including the old 2 GiB boundary. */
++static void test_eevee_shadow_8gb_addresses()
++{
++  for (uint address = 0; address < SHADOW_MAX_PAGE; address++) {
++    const uint3 page = shadow_page_unpack(address);
++    EXPECT_EQ(shadow_page_pack(page), address);
++    ShadowTileData tile = {};
++    tile.page = page;
++    tile.is_allocated = true;
++    tile.is_used = true;
++    tile.do_update = true;
++    ShadowTileData decoded = shadow_tile_unpack(shadow_tile_pack(tile));
++    EXPECT_EQ(decoded.page, page);
++    EXPECT_TRUE(decoded.is_allocated && decoded.is_used && decoded.do_update);
++    tile.is_allocated = false;
++    tile.is_cached = true;
++    tile.cache_index = address;
++    decoded = shadow_tile_unpack(shadow_tile_pack(tile));
++    EXPECT_EQ(decoded.cache_index, address);
++    EXPECT_TRUE(decoded.is_cached && !decoded.is_allocated);
++    for (uint lod = 0; lod < 8; lod++) {
++      ShadowSamplingTile sampling = {};
++      sampling.page = page;
++      sampling.lod = lod;
++      sampling.lod_offset = uint2((1u << lod) - 1u);
++      sampling.is_valid = true;
++      const auto result = shadow_sampling_tile_unpack(shadow_sampling_tile_pack(sampling));
++      EXPECT_EQ(result.page, sampling.page);
++      EXPECT_EQ(result.lod, sampling.lod);
++      EXPECT_EQ(result.lod_offset, sampling.lod_offset);
++      EXPECT_TRUE(result.is_valid);
++    }
++  }
++  /* The complete clipmap offset domain must not overlap the highest page address. */
++  for (uint x = 0; x < 128; x++) {
++    for (uint y = 0; y < 128; y++) {
++      ShadowSamplingTile tile = {};
++      tile.page = uint3(7, 7, 511);
++      tile.lod = 7;
++      tile.lod_offset = uint2(x, y);
++      tile.is_valid = true;
++      const auto result = shadow_sampling_tile_unpack(shadow_sampling_tile_pack(tile));
++      EXPECT_EQ(result.page, tile.page);
++      EXPECT_EQ(result.lod, tile.lod);
++      EXPECT_EQ(result.lod_offset, tile.lod_offset);
++    }
++  }
++}
++DRAW_TEST(eevee_shadow_8gb_addresses)
++
++
+ static void test_eevee_shadow_tilemap_amend()
+ {
+   GPU_render_begin();
+diff --git a/source/blender/makesdna/DNA_scene_types.h b/source/blender/makesdna/DNA_scene_types.h
+index 62ae847c..a5fb3829 100644
+--- a/source/blender/makesdna/DNA_scene_types.h
++++ b/source/blender/makesdna/DNA_scene_types.h
+@@ -2,6 +2,11 @@
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
+ 
++/* Shadow8GB modification, 2026-10-23: extend EEVEE shadow-pool addressing,
++ * capacity, defaults, diagnostics or tests to support 8 GiB.
++ * Distribution notice added 2026-10-24. See the accompanying source and patch. */
++
++
+ /** \file
+  * \ingroup DNA
+  */
+@@ -2698,7 +2703,7 @@ struct SceneEEVEE {
+ 
+   /* Only keep for versioning. */
+   DNA_DEPRECATED int shadow_cube_size_deprecated = 0;
+-  int shadow_pool_size = 512;
++  int shadow_pool_size = 8192;
+   int shadow_ray_count = 1;
+   int shadow_step_count = 6;
+   float shadow_resolution_scale = 1.0f;
+diff --git a/source/blender/makesrna/intern/rna_scene.cc b/source/blender/makesrna/intern/rna_scene.cc
+index 6f5c8164..966dce60 100644
+--- a/source/blender/makesrna/intern/rna_scene.cc
++++ b/source/blender/makesrna/intern/rna_scene.cc
+@@ -2,6 +2,11 @@
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later */
+ 
++/* Shadow8GB modification, 2026-10-23: extend EEVEE shadow-pool addressing,
++ * capacity, defaults, diagnostics or tests to support 8 GiB.
++ * Distribution notice added 2026-10-24. See the accompanying source and patch. */
++
++
+ /** \file
+  * \ingroup RNA
+  */
+@@ -8249,6 +8254,8 @@ static void rna_def_scene_eevee(BlenderRNA *brna)
+       {1024, "1024", 0, "1 GB", ""},
+       {1536, "1536", 0, "1.5 GB", ""},
+       {2048, "2048", 0, "2 GB", ""},
++      {4096, "4096", 0, "4 GB", ""},
++      {8192, "8192", 0, "8 GB", "Requires at least 8 GiB of available GPU memory for the shadow atlas alone"},
+       {0, nullptr, 0, nullptr, nullptr},
+   };
+ 

@@ -1,0 +1,110 @@
+[
+  {
+    "case": "custom-2gb",
+    "image": "frame-01-0.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-2gb",
+    "image": "frame-12-1.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-2gb",
+    "image": "frame-24-2.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-2gb",
+    "image": "frame-01-3.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-8gb",
+    "image": "frame-01-0.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-8gb",
+    "image": "frame-12-1.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-8gb",
+    "image": "frame-24-2.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-8gb",
+    "image": "frame-01-3.png",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0,
+    "nonzero_channels": 0
+  },
+  {
+    "case": "custom-8gb-vulkan",
+    "image": "frame-01-0.png",
+    "max_linear_difference": 0.00784313678741455,
+    "mean_linear_difference": 6.992669341343571e-07,
+    "nonzero_channels": 491
+  },
+  {
+    "case": "custom-8gb-vulkan",
+    "image": "frame-12-1.png",
+    "max_linear_difference": 0.00784313678741455,
+    "mean_linear_difference": 7.389818961200945e-07,
+    "nonzero_channels": 520
+  },
+  {
+    "case": "custom-8gb-vulkan",
+    "image": "frame-24-2.png",
+    "max_linear_difference": 0.003921570256352425,
+    "mean_linear_difference": 7.077773034325219e-07,
+    "nonzero_channels": 499
+  },
+  {
+    "case": "custom-8gb-vulkan",
+    "image": "frame-01-3.png",
+    "max_linear_difference": 0.00784313678741455,
+    "mean_linear_difference": 6.992669341343571e-07,
+    "nonzero_channels": 491
+  },
+  {
+    "case": "stock-2gb",
+    "comparison": "repeat-frame-1",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0
+  },
+  {
+    "case": "custom-2gb",
+    "comparison": "repeat-frame-1",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0
+  },
+  {
+    "case": "custom-8gb",
+    "comparison": "repeat-frame-1",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0
+  },
+  {
+    "case": "custom-8gb-vulkan",
+    "comparison": "repeat-frame-1",
+    "max_linear_difference": 0.0,
+    "mean_linear_difference": 0.0
+  }
+]

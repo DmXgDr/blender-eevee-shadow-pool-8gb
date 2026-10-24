@@ -1,0 +1,253 @@
+{
+  "tests": 22,
+  "failures": 0,
+  "disabled": 0,
+  "errors": 0,
+  "timestamp": "2026-10-23T23:36:25Z",
+  "time": "15.885s",
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "DrawOpenGLTest",
+      "tests": 11,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-10-23T23:36:26Z",
+      "time": "0.391s",
+      "testsuite": [
+        {
+          "name": "eevee_shadow_shift_clear",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 96,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.023s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_shift",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 195,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.016s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_tag_update",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 385,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.015s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_free",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 523,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.026s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_defrag",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 664,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.139s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_alloc",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 776,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.058s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_finalize",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1216,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.016s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_tile_packing",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1251,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_8gb_addresses",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1301,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.006s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_tilemap_amend",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1644,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.002s",
+          "classname": "DrawOpenGLTest"
+        },
+        {
+          "name": "eevee_shadow_page_mask",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1904,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:26Z",
+          "time": "0.084s",
+          "classname": "DrawOpenGLTest"
+        }
+      ]
+    },
+    {
+      "name": "DrawVulkanTest",
+      "tests": 11,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-10-23T23:36:27Z",
+      "time": "14.4s",
+      "testsuite": [
+        {
+          "name": "eevee_shadow_shift_clear",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 96,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:27Z",
+          "time": "0.727s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_shift",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 195,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:27Z",
+          "time": "0.711s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_tag_update",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 385,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:28Z",
+          "time": "0.976s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_free",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 523,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:29Z",
+          "time": "1.408s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_defrag",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 664,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:30Z",
+          "time": "5.118s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_alloc",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 776,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:36Z",
+          "time": "2.16s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_finalize",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1216,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:38Z",
+          "time": "0.2s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_tile_packing",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1251,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:38Z",
+          "time": "0s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_8gb_addresses",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1301,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:38Z",
+          "time": "0.006s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_tilemap_amend",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1644,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:38Z",
+          "time": "0.102s",
+          "classname": "DrawVulkanTest"
+        },
+        {
+          "name": "eevee_shadow_page_mask",
+          "file": "F:\\GPT work\\Blender523-Shadow8GB-Portable\\blender\\source\\blender\\draw\\tests\\eevee_test.cc",
+          "line": 1904,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-23T23:36:38Z",
+          "time": "2.988s",
+          "classname": "DrawVulkanTest"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "files_hash_verified": 6507,
+  "relocation_smoke": {
+    "version": "5.2.3 LTS",
+    "pool_mib": 8192,
+    "binary": "app\\blender.exe",
+    "config_is_local": true,
+    "render_sha256": "68abc55e0d75cc9dbaa909e7d1591bd348d2008f49943cf8215be43a0cee9c80"
+  },
+  "reference_max_difference": 0.0,
+  "reference_mean_difference": 0.0,
+  "reference_nonzero_channels": 0
+}

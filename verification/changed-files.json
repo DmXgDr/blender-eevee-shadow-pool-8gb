@@ -1,0 +1,26 @@
+{
+  "source/blender/draw/engines/eevee/eevee_defines.hh": {
+    "official_sha256": "80cc5114bd428b4781745724efeb2915e31bf3b60007bc344308344bcfea06d3",
+    "modified_sha256": "5017c79beb406c82fa2a0044dae2af3428ccae98ae075344ba59743daddd8f46"
+  },
+  "source/blender/draw/engines/eevee/eevee_shadow.cc": {
+    "official_sha256": "bf52de472e55cdcb820236fa8c058a32c5cef5cdb8a01b7b36276d23d87b5cc5",
+    "modified_sha256": "c5b3cc21b7ae2a9938add8be188f64e56b82d9b595faa435e7c9883b4eb73979"
+  },
+  "source/blender/draw/engines/eevee/eevee_shadow_shared.hh": {
+    "official_sha256": "cbbabce3ae9662a0462eba005dfdbe5755112d5da42948c4c22479adbd09095b",
+    "modified_sha256": "414a709f1d144c15ce35ac22282da230630505cbeecd4ebfe8e4296918757137"
+  },
+  "source/blender/draw/tests/eevee_test.cc": {
+    "official_sha256": "3b57927a78253a0c5790c724505a88ebb0fe71c340ea56c3d239744c3d5ecd41",
+    "modified_sha256": "83cb529d9952a105b3c11118860a61dd091fbe212079552aceaacf50c65b7535"
+  },
+  "source/blender/makesdna/DNA_scene_types.h": {
+    "official_sha256": "542459fcc77620124e7b7ef66692c9f408d5e7d9c533d238b12e2259db77fbb5",
+    "modified_sha256": "3a8ac89cd632baed4cc9d611343b2f2a617dc74749467f128bf6c955da03d86b"
+  },
+  "source/blender/makesrna/intern/rna_scene.cc": {
+    "official_sha256": "eb9cd754fcd09aee2f8c384dc866a2fd1587bc07da0c9e37922462f336deaa30",
+    "modified_sha256": "fc37b7d5597506c8264274e10b18b85dd6caffe18a92c76c72ddaf12fd7da960"
+  }
+}
