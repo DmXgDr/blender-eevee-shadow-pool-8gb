@@ -8254,7 +8254,12 @@ static void rna_def_scene_eevee(BlenderRNA *brna)
       {1024, "1024", 0, "1 GB", ""},
       {1536, "1536", 0, "1.5 GB", ""},
       {2048, "2048", 0, "2 GB", ""},
+      /* Shadow8GB v1.1.0, 2026-10-24: offer 1 GiB increments from 2 to 8 GiB. */
+      {3072, "3072", 0, "3 GB", ""},
       {4096, "4096", 0, "4 GB", ""},
+      {5120, "5120", 0, "5 GB", ""},
+      {6144, "6144", 0, "6 GB", ""},
+      {7168, "7168", 0, "7 GB", ""},
       {8192, "8192", 0, "8 GB", "Requires at least 8 GiB of available GPU memory for the shadow atlas alone"},
       {0, nullptr, 0, nullptr, nullptr},
   };

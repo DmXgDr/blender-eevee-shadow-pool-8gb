@@ -9,7 +9,7 @@
 - `eevee_defines.hh`：32,768 个物理页，512 个图集层。
 - `eevee_shadow_shared.hh`：15 位页地址；利用已分配页和缓存引用互斥的关系共享字段；采样数据保留 LOD 0–7 的完整偏移范围。
 - `eevee_shadow.cc`：可选分配及缓存诊断。设置进程环境变量 `BLENDER_SHADOW_POOL_DIAGNOSTICS=1` 才输出额外信息。
-- `rna_scene.cc`：增加 4 GB、8 GB 设置选项。
+- `rna_scene.cc`：提供 2–8 GB 每 1 GiB 一档的设置选项（v1.1.0 新增 3、5、6、7 GB）。
 - `DNA_scene_types.h`：新默认值为 8192 MiB。
 - `eevee_test.cc`：页地址、缓存索引、层级偏移和 GPU 分配测试。
 

@@ -354,7 +354,7 @@ index 62ae847c..a5fb3829 100644
    int shadow_step_count = 6;
    float shadow_resolution_scale = 1.0f;
 diff --git a/source/blender/makesrna/intern/rna_scene.cc b/source/blender/makesrna/intern/rna_scene.cc
-index 6f5c8164..966dce60 100644
+index 6f5c8164..1018b430 100644
 --- a/source/blender/makesrna/intern/rna_scene.cc
 +++ b/source/blender/makesrna/intern/rna_scene.cc
 @@ -2,6 +2,11 @@
@@ -369,11 +369,16 @@ index 6f5c8164..966dce60 100644
  /** \file
   * \ingroup RNA
   */
-@@ -8249,6 +8254,8 @@ static void rna_def_scene_eevee(BlenderRNA *brna)
+@@ -8249,6 +8254,13 @@ static void rna_def_scene_eevee(BlenderRNA *brna)
        {1024, "1024", 0, "1 GB", ""},
        {1536, "1536", 0, "1.5 GB", ""},
        {2048, "2048", 0, "2 GB", ""},
++      /* Shadow8GB v1.1.0, 2026-10-24: offer 1 GiB increments from 2 to 8 GiB. */
++      {3072, "3072", 0, "3 GB", ""},
 +      {4096, "4096", 0, "4 GB", ""},
++      {5120, "5120", 0, "5 GB", ""},
++      {6144, "6144", 0, "6 GB", ""},
++      {7168, "7168", 0, "7 GB", ""},
 +      {8192, "8192", 0, "8 GB", "Requires at least 8 GiB of available GPU memory for the shadow atlas alone"},
        {0, nullptr, 0, nullptr, nullptr},
    };

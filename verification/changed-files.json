@@ -21,6 +21,6 @@
   },
   "source/blender/makesrna/intern/rna_scene.cc": {
     "official_sha256": "eb9cd754fcd09aee2f8c384dc866a2fd1587bc07da0c9e37922462f336deaa30",
-    "modified_sha256": "fc37b7d5597506c8264274e10b18b85dd6caffe18a92c76c72ddaf12fd7da960"
+    "modified_sha256": "2ecd73c6fc3b007a81521909c5c8698489c8377ffe03cdac631ae63e3b7ac555"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "version": "v1.1.0",
+  "default_gib": 8,
+  "tiers_gib": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "verified_files": 6520,
+  "config_local": true,
+  "max_png_difference": 0.0,
+  "binary_sha256": "d7de184f07f8a6ca00a4ebb580683703af24645da5c317231c72ed9349851c77"
+}

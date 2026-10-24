@@ -1,0 +1,220 @@
+{
+  "opengl": {
+    "allocations": {
+      "2048": {
+        "pages": 8192,
+        "layers": 128,
+        "bytes": 2147483648,
+        "valid": 1
+      },
+      "3072": {
+        "pages": 12288,
+        "layers": 192,
+        "bytes": 3221225472,
+        "valid": 1
+      },
+      "4096": {
+        "pages": 16384,
+        "layers": 256,
+        "bytes": 4294967296,
+        "valid": 1
+      },
+      "5120": {
+        "pages": 20480,
+        "layers": 320,
+        "bytes": 5368709120,
+        "valid": 1
+      },
+      "6144": {
+        "pages": 24576,
+        "layers": 384,
+        "bytes": 6442450944,
+        "valid": 1
+      },
+      "7168": {
+        "pages": 28672,
+        "layers": 448,
+        "bytes": 7516192768,
+        "valid": 1
+      },
+      "8192": {
+        "pages": 32768,
+        "layers": 512,
+        "bytes": 8589934592,
+        "valid": 1
+      }
+    },
+    "renders": {
+      "version": "5.2.3 LTS",
+      "backend": "opengl",
+      "tests": [
+        {
+          "pool_gib": 2,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 13.54,
+          "image": "00-2gb.png"
+        },
+        {
+          "pool_gib": 3,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.487,
+          "image": "01-3gb.png"
+        },
+        {
+          "pool_gib": 4,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.493,
+          "image": "02-4gb.png"
+        },
+        {
+          "pool_gib": 5,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.471,
+          "image": "03-5gb.png"
+        },
+        {
+          "pool_gib": 6,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.526,
+          "image": "04-6gb.png"
+        },
+        {
+          "pool_gib": 7,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.853,
+          "image": "05-7gb.png"
+        },
+        {
+          "pool_gib": 8,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 1.18,
+          "image": "06-8gb.png"
+        },
+        {
+          "pool_gib": 2,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.399,
+          "image": "07-2gb.png"
+        }
+      ]
+    }
+  },
+  "vulkan": {
+    "allocations": {
+      "2048": {
+        "pages": 8192,
+        "layers": 128,
+        "bytes": 2147483648,
+        "valid": 1
+      },
+      "3072": {
+        "pages": 12288,
+        "layers": 192,
+        "bytes": 3221225472,
+        "valid": 1
+      },
+      "4096": {
+        "pages": 16384,
+        "layers": 256,
+        "bytes": 4294967296,
+        "valid": 1
+      },
+      "5120": {
+        "pages": 20480,
+        "layers": 320,
+        "bytes": 5368709120,
+        "valid": 1
+      },
+      "6144": {
+        "pages": 24576,
+        "layers": 384,
+        "bytes": 6442450944,
+        "valid": 1
+      },
+      "7168": {
+        "pages": 28672,
+        "layers": 448,
+        "bytes": 7516192768,
+        "valid": 1
+      },
+      "8192": {
+        "pages": 32768,
+        "layers": 512,
+        "bytes": 8589934592,
+        "valid": 1
+      }
+    },
+    "renders": {
+      "version": "5.2.3 LTS",
+      "backend": "vulkan",
+      "tests": [
+        {
+          "pool_gib": 2,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 2.016,
+          "image": "00-2gb.png"
+        },
+        {
+          "pool_gib": 3,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.4,
+          "image": "01-3gb.png"
+        },
+        {
+          "pool_gib": 4,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.426,
+          "image": "02-4gb.png"
+        },
+        {
+          "pool_gib": 5,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.429,
+          "image": "03-5gb.png"
+        },
+        {
+          "pool_gib": 6,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.456,
+          "image": "04-6gb.png"
+        },
+        {
+          "pool_gib": 7,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.531,
+          "image": "05-7gb.png"
+        },
+        {
+          "pool_gib": 8,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.538,
+          "image": "06-8gb.png"
+        },
+        {
+          "pool_gib": 2,
+          "saved_reopened": true,
+          "max_difference_vs_2gb": 0.0,
+          "seconds": 0.473,
+          "image": "07-2gb.png"
+        }
+      ]
+    }
+  },
+  "binary_sha256": "d7de184f07f8a6ca00a4ebb580683703af24645da5c317231c72ed9349851c77",
+  "unit_tests_passed": 22
+}

@@ -6,7 +6,7 @@
 
 [下载 Windows 便携版](https://github.com/DmXgDr/blender-eevee-shadow-pool-8gb/releases/latest) · [构建说明](docs/BUILD.md) · [测试记录](docs/VALIDATION.md) · [许可与来源](NOTICE.md)
 
-![8 GB 阴影池及实际渲染视口](docs/images/viewport-8gb.png)
+![2–8 GB 容量菜单](docs/images/shadow-pool-menu-v1.1.0.png)
 
 ## 主要改动
 
@@ -17,13 +17,13 @@
 | 图集最大层数 | 128 | 512 |
 | 阴影页尺寸 | 256 × 256 | 保持不变 |
 
-新增 **4 GB**、**8 GB** 菜单选项，原有较小容量档位保留。启动器首次建立的新配置默认使用 EEVEE 和 8 GB 阴影池；已有 `.blend` 文件保留自己的设置。
+**v1.1.0 提供 2、3、4、5、6、7、8 GB 连续档位**，每档相差 1 GiB；原有 2 GB 以下档位保留。启动器首次建立的新配置默认使用 EEVEE 和 8 GB 阴影池；已有 `.blend` 文件保留自己的设置。
 
 这项改动包含页地址、缓存索引及采样数据的位布局调整，并非仅增加界面选项。8 GB 档位实际为 **8,589,934,592 字节（8 GiB）**。它增加的是阴影存储容量，不会自动提高分辨率、灯光数量上限或帧率，也不会改变 Cycles 的阴影系统。
 
 ## 下载与使用
 
-1. 在 [Releases](https://github.com/DmXgDr/blender-eevee-shadow-pool-8gb/releases) 下载 `Blender-5.2.3-Shadow8GB-Windows-x64-v1.0.0.zip`。
+1. 在 [Releases](https://github.com/DmXgDr/blender-eevee-shadow-pool-8gb/releases) 下载 `Blender-5.2.3-Shadow8GB-Windows-x64-v1.1.0.zip`。
 2. 完整解压到可写目录，双击根目录的 **Start-Blender.cmd**。
 3. 在 **Render Properties → Performance → Memory → Shadow Pool** 选择所需容量。
 
@@ -32,6 +32,8 @@
 **8 GB 阴影池本身就需要 8 GiB 显存，模型、贴图与其他渲染数据还需要额外空间。** 8 GB 显卡不等于能够使用 8 GB 阴影池；空闲显存不足时请选择较小档位。当前验证硬件是 NVIDIA RTX 4090 24 GB，其他显卡尚未验证。
 
 ## 验证结果
+
+**v1.1.0 新增验证：** OpenGL / Vulkan 全部 2–8 GB 档位及返回 2 GB 共 16 次实际分配、保存重开和渲染通过；22 项阴影测试再次通过。以下压力测试结论来自 v1.0.0，详见记录。
 
 - OpenGL、Vulkan 共 **22 项阴影单元测试全部通过**。
 - 实际分配 2048 × 2048 × 512 的阴影图集，共 32,768 页。
@@ -50,7 +52,7 @@
 - [`launcher/`](launcher/)：便携启动器源码。
 - [`verification/`](verification/)：测试数据、文件哈希与解压复测结果。
 
-上游版本为 `v5.2.3`，提交为 `e13b728c6880d3084d9d57c30031ed5df8b39dee`。运行时代码修改日期为 2026-10-23；2026-10-24 补充公开发布文档和源码修改说明，程序二进制未改变。
+上游版本为 `v5.2.3`，提交为 `e13b728c6880d3084d9d57c30031ed5df8b39dee`。首次运行时代码修改日期为 2026-10-23；v1.1.0 于 2026-10-24 增加 3、5、6、7 GB 档位并重新编译，默认容量保持 8 GB。
 
 每个 Release 同时提供完整对应源码归档、补丁和 SHA-256 校验文件；便携 ZIP 内也包含对应源码。GitHub 自动生成的仓库源码归档不含预编译 Windows 程序。
 
@@ -62,4 +64,4 @@ Blender 由 Blender Foundation 和 Blender 社区开发。本项目仅对阴影�
 
 ## English summary
 
-An **unofficial Windows x64 build of Blender 5.2.3 LTS** extending the EEVEE shadow pool to **8 GiB / 32,768 physical pages**. Includes 4 GB and 8 GB settings, matching address/cache packing changes, portable launchers, complete corresponding source, and validation results. Tested on an NVIDIA RTX 4090 24 GB with OpenGL and Vulkan. The shadow atlas alone requires 8 GiB of VRAM; additional memory is needed for the scene. This project is not affiliated with or endorsed by the Blender Foundation. See [NOTICE.md](NOTICE.md) for licensing and provenance.
+An **unofficial Windows x64 build of Blender 5.2.3 LTS** extending the EEVEE shadow pool to **8 GiB / 32,768 physical pages**. Includes 2–8 GB settings in 1 GiB increments, matching address/cache packing changes, portable launchers, complete corresponding source, and validation results. Tested on an NVIDIA RTX 4090 24 GB with OpenGL and Vulkan. The shadow atlas alone requires 8 GiB of VRAM; additional memory is needed for the scene. This project is not affiliated with or endorsed by the Blender Foundation. See [NOTICE.md](NOTICE.md) for licensing and provenance.

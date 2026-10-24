@@ -1,31 +1,17 @@
-# 验证记录
+# v1.1.0 档位更新验证（2026-10-24）
 
-版本：Blender 5.2.3 LTS，Shadow8GB v1.0.0，非官方修改版。
-测试平台：Windows x64 / NVIDIA GeForce RTX 4090 24 GB / 驱动 617.14。
-程序 SHA-256：`88698edaa61c638688710ff38aa6a6e0559f702f67d5ddc96db87dda3f8bb031`。
+新增 3、5、6、7 GB，提供 2–8 GB 每 1 GiB 一档；默认 8 GB。程序 SHA-256：`d7de184f07f8a6ca00a4ebb580683703af24645da5c317231c72ed9349851c77`。
 
-## 通过的检查
+测试平台：Windows x64，NVIDIA RTX 4090 24 GB。OpenGL 与 Vulkan 分别完成 2→3→4→5→6→7→8→2 GB 的八次场景保存、重新打开及实际渲染，合计 16 次，全部通过。同后端各容量的普通场景 PNG 与该后端 2 GB 参考逐像素一致。
 
-- OpenGL 11 项、Vulkan 11 项阴影单元测试，合计 22 项全部通过。覆盖 32768 个页地址和缓存索引、LOD 0–7、完整偏移范围、分配、释放、缓存与碎片整理。
-- 实际 8 GiB 图集分配：2048×2048×512，8,589,934,592 字节，32768 页，分配成功。
-- 普通场景包含太阳光、区域光、点光源、聚光灯及运动遮挡物。在 1、12、24、返回 1 帧进行渲染；OpenGL 下修改版的 2 GB、8 GB 与官方 2 GB PNG 图像逐像素一致。
-- Vulkan 8 GB 完成相同四次渲染。与官方 OpenGL 结果有轻微后端差异：最大归一化通道差为 2/255，平均差低于 0.000001；同后端返回第 1 帧完全一致。逐项数据见 render-comparison.json（历史字段名 linear_difference 实际比较已保存 PNG 的归一化通道值）。
-- 96 盏太阳灯压力场景：原版 2 GB 报 Shadow buffer full；修改版 8 GB 最大实际占用 14554 页，超过旧版 8192 页容量，无该报错，渲染完成。
-- 独立 GUI 的 Rendered 视口在 1、12、24、返回 1 帧截图，已检查图像；原生菜单显示并提供 4 GB、8 GB 档位。
-- 对应源码归档中的 6 个修改文件与本地已编译源码哈希一致。程序目录不存在 Git LFS 占位文件。
+每档图集均成功实际分配，页数为 GiB × 4096，层数为 GiB × 64，字节数为 GiB × 1,073,741,824。默认值保持 8192 MiB。22 项阴影单元测试再次全部通过。详情见 verification/v1.1.0-tiers.json（便携包为 Verification/v1.1.0-tiers.json）。
 
-## 复测
+![7 GB 渲染视口](images/viewport-tiers-v1.1.0.png)
 
-解压后双击 Start-Blender.cmd。打开 Examples/Shadow-Validation.blend，按 F12 渲染。
-压力场景为 Examples/Shadow-Pressure-96-Suns.blend；需要足够空闲显存。
-命令行便携与渲染检查可运行：
+![完整容量菜单](images/shadow-pool-menu-v1.1.0.png)
 
-```powershell
-.\Start-Blender.ps1 -b --gpu-backend opengl --python-exit-code 1 --python .\Verification\smoke_test.py
-```
+本次修改仅为容量枚举，最大容量、页地址与缓存算法沿用 v1.0.0。此前 v1.0.0 的 96 灯压力场景结果保留为历史验证，本次没有重新跑该压力场景，也未对所有显卡、插件或真实项目作全面验证。
 
-输出保存在 profiles/daily/relocation-test。源码内含单元测试，重建后可运行 blender_test --gtest_filter=DrawOpenGLTest.eevee_shadow*:DrawVulkanTest.eevee_shadow*。
+8 GB 阴影池之外仍需要额外场景显存。新增档位便于选择预算，不增加图像分辨率或保证性能提升。
 
-## 验证范围
-
-已测试上面的合成场景和硬件，未测试其他显卡、所有插件、用户实际项目或长时间完整动画。视口截图为指定帧检查，不代表完整动画播放验收。8 GB 是阴影图集容量，其他渲染数据还需要额外显存。Cycles 渲染器和其它功能未在本任务中做全面回归。
+[v1.0.0 历史验证](VALIDATION-v1.0.0.md)
